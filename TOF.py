@@ -1,5 +1,10 @@
 '''This is the class that governs the time of flight sensors
-the sensors in question are the vl53l1x TOF sensors and the drone uses 5 of them'''
+the sensors in question are the vl53l1x TOF sensors and the drone uses 5 of them
+
+
+This class successfully uses 5 VL53L1X sensors hough a TCA9548A multiplexer
+
+'''
 
 # Mux and TOF imports
 import I2CMultiplexer
