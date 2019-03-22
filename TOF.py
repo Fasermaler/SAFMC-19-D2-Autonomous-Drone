@@ -99,3 +99,15 @@ class TOF_sensor:
 
 			time.sleep(rate)
 
+
+#### The test code here is for testing the sensors directly ####
+
+# all sensors
+sensor_test = TOF_sensor(0,1,2,3,7)
+sensor_test.initialize_sensors()
+sensor_test.get_sensor_readings()
+
+# one sensor
+single_sensor_test = TOF_sensor(0)
+single_sensor_test.initialize_sensors()
+single_sensor_test.get_sensor_readings()
