@@ -1,3 +1,6 @@
+# This is the SAFMC_drone class that deals with all dronekit and mavlink subroutines
+# It is the cleaned up and refractored version of the original script
+
 import math
 import time
 
@@ -9,40 +12,54 @@ from dronekit import connect, VehicleMode, LocationGlobal, LocationGlobalRelativ
 # This class does not support SITL mode
 
 class SAFMC_drone:
+
     def __init__(self, connection_string, baud_rate):
+
         print('Connecting to vehicle on: %s' % connection_string)
         self.vehicle = connect(connection_string, wait_ready=True, baud=baud_rate)
 
 
-    # Arm and rakeoff to specific altitude
+    # Arm and takeoff to specific altitude
     def arm_and_takeoff(self, aTargetAltitude):
 
         print("Arming motors")
+        
         # Copter should arm in GUIDED mode
         self.vehicle.mode = VehicleMode("GUIDED")
         self.vehicle.armed = True
 
         #Confirm vehicle armed before attempting to take off
         while not self.vehicle.armed:
+
             print(" Waiting for arming...")
             time.sleep(1)
+
         print("Taking off!")
+
         self.vehicle.simple_takeoff(aTargetAltitude)  # Take off to target altitude
 
         # Wait for vehicle to reach target altitude before actually exiting the function
         while True:
+
             # Uses rangefinder distance because EKF altitude is inaccurate
             print(" Altitude: ", self.vehicle.rangefinder.distance)
             current_alt = self.vehicle.rangefinder.distance
 
             # Any altitude values above the height restriction are filtered out
             if current_alt > 20:
+
                 current_alt = 0
+
             print(" Arm state: ", self.vehicle.armed)
+            
             # Break and return from function just below target altitude.
+            
             if current_alt >= aTargetAltitude * 0.95:
+                
                 print("Reached target altitude")
+                
                 break
+            
             time.sleep(1)
 
     # Give velocity based on the North and East frames
@@ -65,6 +82,7 @@ class SAFMC_drone:
 
         # send command to vehicle on 1 Hz cycle
         for x in range(0,duration):
+            
             self.vehicle.send_mavlink(msg)
             time.sleep(0.5) # Controls the mavlink message send rate, do not set lower than 0.3
 
@@ -76,9 +94,13 @@ class SAFMC_drone:
     def condition_yaw(self, heading, relative=False):
 
         if relative:
+            
             is_relative = 1 #yaw relative to direction of travel
+        
         else:
+            
             is_relative = 0 #yaw is an absolute angle
+        
         # create the CONDITION_YAW command using command_long_encode()
         msg = self.vehicle.message_factory.command_long_encode(
             0, 0,    # target system, target component
@@ -90,6 +112,7 @@ class SAFMC_drone:
             is_relative, # param 4, relative offset 1, absolute angle 0
             0, 0, 0)    # param 5 ~ 7 not used
         # send command to vehicle
+        
         self.vehicle.send_mavlink(msg)
 
     # The following 2 methods allow for the drone attitude to be directly controlled
@@ -113,7 +136,9 @@ class SAFMC_drone:
         self.vehicle.send_mavlink(msg)
 
         start = time.time()
+        
         while time.time() - start < duration:
+            
             self.vehicle.send_mavlink(msg)
             #time.sleep(0.1)
 
@@ -134,6 +159,7 @@ class SAFMC_drone:
 
     # set land mode
     def set_land(self):
+        
         print("Landing")
         self.vehicle.mode = VehicleMode("LAND") 
 
