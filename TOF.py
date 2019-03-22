@@ -95,7 +95,7 @@ class TOF_sensor:
 			# gets reading from each tof and updates the dist_list
 			for port in self.ports:
 				self.mux_obj.selectPort(port)
-				self.dist_list[i] = self.tof_obj.get_distance()
+				self.dist_list[i] = self.tof_obj.get_distance() - self.offsets[i]
 
 			time.sleep(rate)
 
