@@ -78,6 +78,20 @@ class TOF_sensor:
 			print("Failed to initialize sensors")
 			self.init = False
 
+
+	# subroutine to terminate the TOF sensors
+	def terminate_sensors(self):
+		
+		# close the TOF on every port
+		for port in self.ports:
+
+			self.mux_obj.selectPort(port)
+			self.dist_list[i] = self.tof_obj.close()
+
+		# close the multiplexer
+		self.mux_obj.i2c.write_byte(0x70, 0)
+
+
 	# subroutine to get the sensor readings
 	# user can set the rate in seconds
 	def get_sensor_readings(self, rate=0.05):
@@ -98,6 +112,10 @@ class TOF_sensor:
 				self.dist_list[i] = self.tof_obj.get_distance() - self.offsets[i]
 
 			time.sleep(rate)
+
+		self.terminate_sensors()
+
+
 
 
 #### The test code here is for testing the sensors directly ####
