@@ -10,6 +10,8 @@ from dronekit import connect, VehicleMode, LocationGlobal, LocationGlobalRelativ
 
 
 # This class does not support SITL mode
+# arm_and_takeoff is a modified version of the original dronekit example
+# send_global_velocity, condition_yaw, set_attitude, to_quarternion are from the dronekit examples
 
 class SAFMC_drone:
 
