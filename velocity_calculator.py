@@ -7,7 +7,7 @@ These functions are for easy calculations of the drone's velocity from it's init
 import math
 
 
-class velocity:
+class vel_calc:
 
 	# Upon initalization of the velocity class, it takes the immediate bearing 
 	# and assumes that this is the 'forward' bearing for the drone

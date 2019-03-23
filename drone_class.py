@@ -159,6 +159,11 @@ class SAFMC_drone:
         y = t0 * t2 * t5 + t1 * t3 * t4
         z = t1 * t2 * t4 - t0 * t3 * t5
 
+    # gets the vehicle heading for the velocity calculator
+    def get_heading(self):
+
+        return self.vehicle.heading
+
     # set land mode
     def set_land(self):
         
