@@ -73,6 +73,24 @@ class movement:
 	def move_vels(self, North, East, Down=0, times=1)
 		self.drone.send_global_velocity(North, East, Down, times)
 
+	'''the following are raw directional movement calls without TOF checks'''
+
+	def move_forward_raw(self, times=1):
+		for i in range(times):
+			self.drone.send_global_velocity(*velocities[0],0,1)
+
+	def move_backward(self, times=1)
+		for i in range(times):
+			self.drone.send_global_velocity(*velocities[1],0,times)
+
+	def move_left(self, times=1)
+		for i in range(times):
+			self.drone.send_global_velocity(*velocities[2],0,times)
+
+	def move_right(self, times=1)
+		for i in range(times):
+			self.drone.send_global_velocity(*velocities[3],0,times)
+
 
 
 
