@@ -29,29 +29,62 @@ class movement:
 	This is just a warning to those who may want to change the threshold to be lower than 800mm
 	'''
 	def move_forward(self, times=1):
+
 		for i in range(times):
 			if self.tof.dist_list[0] > threshold:
 				self.drone.send_global_velocity(*velocities[0],0,1)
 			else:
 				self.drone.send_global_velocity(0,0,0,1)
+
+		self.stop()
+
 	def move_backward(self, times=1)
+
 		for i in range(times):
 			if self.tof.dist_list[1] > threshold:
 				self.drone.send_global_velocity(*velocities[1],0,times)
 			else:
 				self.drone.send_global_velocity(0,0,0,1)
+
+		self.stop()
+
 	def move_left(self, times=1)
+
 		for i in range(times):
 			if self.tof.dist_list[2] > threshold:
 				self.drone.send_global_velocity(*velocities[2],0,times)
 			else:
 				self.drone.send_global_velocity(0,0,0,1)
+			
+		self.stop()
+
 	def move_right(self, times=1)
+
 		for i in range(times):
 			if self.tof.dist_list[3] > threshold:
 				self.drone.send_global_velocity(*velocities[3],0,times)
 			else:
 				self.drone.send_global_velocity(0,0,0,1)
+
+		self.stop()
+
+
+
+	# stops all drone velocity for x seconds
+	# seconds assumes the update rate for send_global_velocity is 0.5s
+	# THIS DOES NOT STOP THE DRONE FROM DRIFTING DUE TO SENSORS
+	def stop(self, seconds=1):
+
+		self.drone.send_global_velocity(0,0,0,seconds*2)
+
+	# Yaw movement in degrees relative to the drone
+	def yaw(self, angle):
+
+		self.drone.condition_yaw(angle, True)
+
+		# give the drone appropriate time to execute the yaw
+		stop_time = int(angle/5) + 2
+		self.stop(stop_time)
 
 	# this is a subroutine to call the drone to move at an angle relative to itself (0 is forward)
 	# the default velocity is 0.1m/s
